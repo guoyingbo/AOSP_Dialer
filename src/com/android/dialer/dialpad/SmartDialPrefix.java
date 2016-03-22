@@ -29,7 +29,12 @@ import com.google.common.collect.Lists;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Locale;
+import java.util.List;
+import android.util.Log;
 
+import com.android.providers.contacts.HanziToPinyin;
+import com.android.providers.contacts.HanziToPinyin.Token;
 /**
  * Smart Dial utility class to find prefixes of contacts. It contains both methods to find supported
  * prefix combinations for contact names, and also methods to find supported prefix combinations for
@@ -164,6 +169,21 @@ public class SmartDialPrefix {
      * @return A List of strings, whose prefix can be used to look up the contact.
      */
     public static ArrayList<String> generateNamePrefixes(String index) {
+    
+	do 
+    	{
+            final String name =  index;
+            if (name == null)  break;
+            final List<Token> tokens = HanziToPinyin.getInstance().getTokens(name);
+            if (tokens.isEmpty()) break;
+            final StringBuilder buffer = new StringBuilder();
+            for (final Token token : tokens)
+                buffer.append(' ').append(token.target);
+            final String full = buffer.substring(1).toLowerCase(Locale.US);
+            index= full;
+    	}
+    	while(false);
+	      
         final ArrayList<String> result = Lists.newArrayList();
 
         /** Parses the name into a list of tokens.*/

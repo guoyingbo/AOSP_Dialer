@@ -18,6 +18,8 @@ res_dirs := res \
     $(phone_common_dir)/res
 
 LOCAL_SRC_FILES := $(call all-java-files-under, $(src_dirs))
+LOCAL_SRC_FILES += ../../providers/ContactsProvider/src/com/android/providers/contacts/HanziToPinyin.java \
+                                   ../../../libcore/luni/src/main/java/libcore/icu/Transliterator.java
 LOCAL_RESOURCE_DIR := $(addprefix $(LOCAL_PATH)/, $(res_dirs)) \
     frameworks/support/v7/cardview/res frameworks/support/v7/recyclerview/res
 

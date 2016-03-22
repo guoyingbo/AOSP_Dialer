@@ -24,7 +24,12 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.List;
+import android.util.Log;
 
+import com.android.providers.contacts.HanziToPinyin;
+import com.android.providers.contacts.HanziToPinyin.Token;
 /**
  * {@link #SmartDialNameMatcher} contains utility functions to remove accents from accented
  * characters and normalize a phone number. It also contains the matching logic that determines if
@@ -256,6 +261,22 @@ public class SmartDialNameMatcher {
     @VisibleForTesting
     boolean matchesCombination(String displayName, String query,
             ArrayList<SmartDialMatchPosition> matchList) {
+	do{	
+	    	  final String name = displayName;
+		  if (name == null) 
+		       	break;
+		  final List<Token> tokens = HanziToPinyin.getInstance().getTokens(name);
+		  if (tokens.isEmpty()) 
+		      	break;
+		  final StringBuilder full = new StringBuilder();
+		  for (final Token token : tokens)
+		       full.append(' ').append(token.target);
+		  final String buffer = full.substring(1).toLowerCase(Locale.US);   		
+			      
+		  displayName = buffer;
+    	}
+    	while(false);
+
         StringBuilder builder = new StringBuilder();
         constructEmptyMask(builder, displayName.length());
         mNameMatchMask = builder.toString();
@@ -405,10 +426,14 @@ public class SmartDialNameMatcher {
         return false;
     }
 
+//*********************************修改***********************************
     public boolean matches(String displayName) {
         mMatchPositions.clear();
-        return matchesCombination(displayName, mQuery, mMatchPositions);
+        boolean br =  matchesCombination(displayName, mQuery, mMatchPositions);
+        mMatchPositions.clear();
+        return br;
     }
+//************************************************************************
 
     public ArrayList<SmartDialMatchPosition> getMatchPositions() {
         // Return a clone of mMatchPositions so that the caller can use it without

@@ -1,5 +1,7 @@
 package com.android.dialer.dialpad;
 
+import java.util.ArrayList;
+
 /**
  * Note: These methods currently take characters as arguments. For future planned language support,
  * they will need to be changed to use codepoints instead of characters.
